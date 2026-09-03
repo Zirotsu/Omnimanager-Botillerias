@@ -26,6 +26,9 @@ contextBridge.exposeInMainWorld('omniStandalone', {
     openCash: payload => ipcRenderer.invoke('omni:data:open-cash', payload),
     closeCash: payload => ipcRenderer.invoke('omni:data:close-cash', payload)
   },
+  print: {
+    html: payload => ipcRenderer.invoke('omni:print:html', payload)
+  },
   app: {
     getInfo: () => ipcRenderer.invoke('omni:app:info')
   }
