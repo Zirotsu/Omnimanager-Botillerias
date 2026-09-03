@@ -1,0 +1,66 @@
+{
+  "name": "omnimanager-botillerias-standalone",
+  "private": true,
+  "version": "0.2.0",
+  "description": "OmniManager Botillerías standalone para Windows, operación offline",
+  "author": "Consultoría Helix SpA",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "electron": "concurrently -k \"vite\" \"wait-on http://127.0.0.1:5173 && electron .\"",
+    "electron:build": "npm run build && electron-builder --win --x64",
+    "license:issue": "node tools/issue-license.mjs"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "exceljs": "^4.4.0",
+    "lucide-react": "^0.475.0",
+    "papaparse": "^5.4.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/papaparse": "^5.3.15",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "autoprefixer": "^10.4.21",
+    "concurrently": "^9.1.0",
+    "electron": "44.1.1",
+    "electron-builder": "26.15.3",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0",
+    "wait-on": "^8.0.0"
+  },
+  "build": {
+    "appId": "cl.helixfix.omnimanager.botillerias",
+    "productName": "OmniManager Botillerías",
+    "copyright": "Copyright © 2026 Consultoría Helix SpA",
+    "asar": true,
+    "directories": { "output": "dist_electron" },
+    "files": ["dist/**/*", "electron/**/*", "package.json"],
+    "extraResources": [
+      { "from": "build/license-public-key.pem", "to": "license-public-key.pem" }
+    ],
+    "win": {
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ]
+    },
+    "nsis": {
+      "artifactName": "OmniManager-Botillerias-Setup-${version}-${arch}.${ext}",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "OmniManager Botillerías"
+    },
+    "portable": {
+      "artifactName": "OmniManager-Botillerias-Portable-${version}-${arch}.${ext}"
+    }
+  }
+}
