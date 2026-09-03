@@ -45,15 +45,18 @@
       "target": [
         { "target": "nsis", "arch": ["x64"] },
         { "target": "portable", "arch": ["x64"] }
-      ],
-      "artifactName": "OmniManager-Botillerias-${version}-${arch}.${ext}"
+      ]
     },
     "nsis": {
+      "artifactName": "OmniManager-Botillerias-Setup-${version}-${arch}.${ext}",
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "OmniManager Botillerías"
+    },
+    "portable": {
+      "artifactName": "OmniManager-Botillerias-Portable-${version}-${arch}.${ext}"
     }
   }
 }
