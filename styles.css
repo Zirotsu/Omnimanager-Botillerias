@@ -1,0 +1,138 @@
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #e8eef7;
+  background: #081018;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; min-height: 100vh; background: #081018; }
+button, input { font: inherit; }
+button { cursor: pointer; }
+
+.boot-screen,
+.license-screen,
+.authorized-screen {
+  min-height: 100vh;
+}
+
+.boot-screen {
+  display: grid;
+  place-items: center;
+  color: #9fb2c7;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.license-screen {
+  display: grid;
+  place-items: center;
+  padding: 32px 18px;
+  background:
+    radial-gradient(circle at 12% 15%, rgba(0, 232, 252, .14), transparent 34%),
+    radial-gradient(circle at 85% 80%, rgba(63, 60, 251, .16), transparent 38%),
+    #081018;
+}
+
+.license-card {
+  width: min(540px, 100%);
+  padding: 34px;
+  border-radius: 28px;
+  background: rgba(12, 22, 34, .94);
+  border: 1px solid rgba(255,255,255,.09);
+  box-shadow: 0 35px 90px rgba(0,0,0,.44);
+}
+
+.brand-mark,
+.foundation-icon {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #01e8fc, #3f3cfb);
+  color: #05111a;
+  box-shadow: 0 14px 32px rgba(1,232,252,.16);
+}
+
+.eyebrow {
+  margin-top: 20px;
+  color: #01e8fc;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .24em;
+}
+
+h1 { margin: 4px 0 0; font-size: clamp(32px, 5vw, 46px); line-height: 1; }
+.lead { color: #9fb2c7; line-height: 1.6; margin: 16px 0 24px; }
+
+.installation-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px 18px;
+  background: #07111b;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+}
+.installation-box span { display: block; color: #73869c; font-size: 10px; text-transform: uppercase; font-weight: 800; letter-spacing: .12em; }
+.installation-box strong { display: block; margin-top: 5px; font-family: Consolas, monospace; letter-spacing: .08em; color: #eef7ff; }
+.installation-box button { width: 38px; height: 38px; border: 0; border-radius: 11px; background: #142335; color: #b9cadb; display: grid; place-items: center; }
+.installation-box button:hover { background: #1c3148; }
+
+.demo-button,
+.activate-button {
+  width: 100%;
+  min-height: 48px;
+  border: 0;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  font-weight: 900;
+}
+.demo-button { margin-top: 14px; background: #152438; color: #dce8f4; }
+.demo-button:hover { background: #1b2d45; }
+.activate-button { margin-top: 12px; color: #041017; background: linear-gradient(135deg, #01e8fc, #3f8cff); }
+.activate-button:hover { filter: brightness(1.06); }
+.demo-button:disabled, .activate-button:disabled { opacity: .45; cursor: not-allowed; }
+
+.divider { display: flex; align-items: center; gap: 12px; margin: 26px 0 18px; color: #5f7186; font-size: 9px; font-weight: 900; letter-spacing: .16em; }
+.divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: rgba(255,255,255,.08); }
+
+form label { display: block; margin-bottom: 8px; color: #95a9bc; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+.license-input { display: flex; align-items: center; gap: 10px; padding: 0 14px; min-height: 50px; border-radius: 14px; background: #07111b; border: 1px solid rgba(255,255,255,.1); color: #01e8fc; }
+.license-input:focus-within { border-color: rgba(1,232,252,.72); box-shadow: 0 0 0 4px rgba(1,232,252,.08); }
+.license-input input { width: 100%; border: 0; outline: 0; background: transparent; color: #eef7ff; font-family: Consolas, monospace; }
+.license-input input::placeholder { color: #506277; font-family: inherit; }
+
+.notice, .error-box { margin-top: 14px; padding: 13px 14px; border-radius: 13px; font-size: 13px; line-height: 1.4; }
+.notice { display: flex; align-items: center; gap: 10px; }
+.notice.warning { background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.24); color: #f8c66b; }
+.notice.danger, .error-box { background: rgba(239,68,68,.09); border: 1px solid rgba(239,68,68,.22); color: #fca5a5; }
+
+footer { margin-top: 26px; text-align: center; color: #5f7186; font-size: 10px; font-weight: 700; }
+
+.authorized-screen { padding: 28px; background: #eef3f8; color: #0d1724; }
+.authorized-header { display: flex; align-items: center; justify-content: space-between; gap: 20px; max-width: 1180px; margin: 0 auto; }
+.authorized-header .eyebrow { margin: 0; color: #2657e8; }
+.authorized-header h1 { font-size: 34px; }
+.license-pill { display: inline-flex; align-items: center; gap: 8px; background: #e2f7ec; color: #147044; border: 1px solid #bce7cf; padding: 10px 14px; border-radius: 999px; font-size: 12px; font-weight: 900; }
+
+.foundation-panel { max-width: 1180px; margin: 34px auto 0; display: flex; gap: 22px; padding: 28px; border-radius: 24px; background: white; border: 1px solid #dfe7ef; box-shadow: 0 18px 50px rgba(19,38,60,.08); }
+.foundation-panel h2 { margin: 0 0 8px; font-size: 24px; }
+.foundation-panel p { max-width: 760px; color: #607286; line-height: 1.65; }
+.database-grid { display: grid; grid-template-columns: repeat(4, minmax(130px, 1fr)); gap: 10px; margin-top: 22px; }
+.database-grid span { padding: 14px; background: #f4f7fa; border-radius: 14px; color: #52667b; font-size: 12px; }
+.database-grid b { display: block; margin-bottom: 5px; color: #15283b; }
+
+@media (max-width: 760px) {
+  .license-card { padding: 26px 20px; }
+  .authorized-header, .foundation-panel { flex-direction: column; align-items: flex-start; }
+  .database-grid { grid-template-columns: 1fr 1fr; }
+}
