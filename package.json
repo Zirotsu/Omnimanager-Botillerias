@@ -1,7 +1,7 @@
 {
   "name": "omnimanager-botillerias-standalone",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "OmniManager Botillerías standalone para Windows, operación offline",
   "author": "Consultoría Helix SpA",
   "main": "electron/main.cjs",
@@ -14,16 +14,22 @@
   },
   "dependencies": {
     "@vitejs/plugin-react": "^4.3.4",
+    "exceljs": "^4.4.0",
     "lucide-react": "^0.475.0",
+    "papaparse": "^5.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@types/papaparse": "^5.3.15",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "autoprefixer": "^10.4.21",
     "concurrently": "^9.1.0",
     "electron": "44.1.1",
     "electron-builder": "26.15.3",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
     "typescript": "^5.7.0",
     "vite": "^6.0.0",
     "wait-on": "^8.0.0"
@@ -33,24 +39,12 @@
     "productName": "OmniManager Botillerías",
     "copyright": "Copyright © 2026 Consultoría Helix SpA",
     "asar": true,
-    "directories": {
-      "output": "dist_electron"
-    },
-    "files": [
-      "dist/**/*",
-      "electron/**/*",
-      "package.json"
-    ],
+    "directories": { "output": "dist_electron" },
+    "files": ["dist/**/*", "electron/**/*", "package.json"],
     "win": {
       "target": [
-        {
-          "target": "nsis",
-          "arch": ["x64"]
-        },
-        {
-          "target": "portable",
-          "arch": ["x64"]
-        }
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
       ],
       "artifactName": "OmniManager-Botillerias-${version}-${arch}.${ext}"
     },
