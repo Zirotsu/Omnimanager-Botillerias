@@ -2,10 +2,14 @@ const path = require('node:path');
 const { app, BrowserWindow, ipcMain } = require('electron');
 const { LicenseManager } = require('./license-manager.cjs');
 const { DatabaseManager } = require('./database-manager.cjs');
+const { LocalDataStore } = require('./local-data-store.cjs');
+const { CashRegisterStore } = require('./cash-register-store.cjs');
 
 let mainWindow = null;
 let licenseManager = null;
 let databaseManager = null;
+let dataStore = null;
+let cashRegisterStore = null;
 
 const gotLock = app.requestSingleInstanceLock();
 if (!gotLock) app.quit();
@@ -34,11 +38,14 @@ function createWindow() {
   mainWindow.once('ready-to-show', () => mainWindow.show());
   mainWindow.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
 
-  if (app.isPackaged) {
-    mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
-  } else {
-    mainWindow.loadURL('http://127.0.0.1:5173');
-  }
+  if (app.isPackaged) mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
+  else mainWindow.loadURL('http://127.0.0.1:5173');
+}
+
+function requireActiveLicense() {
+  const status = licenseManager.getStatus();
+  if (status.status !== 'active') throw new Error('La licencia no está activa.');
+  return status;
 }
 
 function registerIpc() {
@@ -46,8 +53,77 @@ function registerIpc() {
   ipcMain.handle('omni:license:start-demo', () => licenseManager.activateDemo());
   ipcMain.handle('omni:license:activate', (_event, token) => licenseManager.activateCommercial(token));
   ipcMain.handle('omni:license:installation-id', () => licenseManager.getInstallationId());
-  ipcMain.handle('omni:database:info', () => databaseManager.getInfo());
-  ipcMain.handle('omni:database:backup', (_event, label) => databaseManager.backupNow(label));
+
+  ipcMain.handle('omni:database:info', () => {
+    requireActiveLicense();
+    return databaseManager.getInfo();
+  });
+  ipcMain.handle('omni:database:backup', (_event, label) => {
+    requireActiveLicense();
+    return databaseManager.backupNow(label);
+  });
+  ipcMain.handle('omni:data:snapshot', () => {
+    requireActiveLicense();
+    return dataStore.snapshot();
+  });
+  ipcMain.handle('omni:data:replace-snapshot', (_event, snapshot) => {
+    requireActiveLicense();
+    databaseManager.backupNow('antes-restaurar');
+    return dataStore.replaceSnapshot(snapshot);
+  });
+  ipcMain.handle('omni:data:list', (_event, collection) => {
+    requireActiveLicense();
+    return dataStore.list(collection);
+  });
+  ipcMain.handle('omni:data:put', (_event, collection, id, data) => {
+    requireActiveLicense();
+    return dataStore.put(collection, id, data);
+  });
+  ipcMain.handle('omni:data:remove', (_event, collection, id) => {
+    requireActiveLicense();
+    return dataStore.remove(collection, id);
+  });
+  ipcMain.handle('omni:data:save-profile', (_event, profile) => {
+    requireActiveLicense();
+    return dataStore.saveProfile(profile);
+  });
+  ipcMain.handle('omni:data:import-products', (_event, products) => {
+    requireActiveLicense();
+    return dataStore.importProducts(products);
+  });
+  ipcMain.handle('omni:data:import-barcodes', (_event, mappings) => {
+    requireActiveLicense();
+    return dataStore.importBarcodes(mappings);
+  });
+  ipcMain.handle('omni:data:adjust-stock', (_event, payload) => {
+    requireActiveLicense();
+    return dataStore.adjustStock(payload);
+  });
+  ipcMain.handle('omni:data:commit-sale', (_event, payload) => {
+    requireActiveLicense();
+    return dataStore.commitSale(payload);
+  });
+  ipcMain.handle('omni:data:void-sale', (_event, saleId) => {
+    requireActiveLicense();
+    return dataStore.voidSale(saleId);
+  });
+  ipcMain.handle('omni:data:commit-purchase', (_event, payload) => {
+    requireActiveLicense();
+    return dataStore.commitPurchase(payload);
+  });
+  ipcMain.handle('omni:data:void-purchase', (_event, purchaseId) => {
+    requireActiveLicense();
+    return dataStore.voidPurchase(purchaseId);
+  });
+  ipcMain.handle('omni:data:open-cash', (_event, payload) => {
+    requireActiveLicense();
+    return cashRegisterStore.open(payload);
+  });
+  ipcMain.handle('omni:data:close-cash', (_event, payload) => {
+    requireActiveLicense();
+    return cashRegisterStore.close(payload);
+  });
+
   ipcMain.handle('omni:app:info', () => ({
     name: 'OmniManager Botillerías',
     version: app.getVersion(),
@@ -63,10 +139,10 @@ app.whenReady().then(() => {
     resourcesPath: process.resourcesPath
   });
 
-  databaseManager = new DatabaseManager({
-    userDataPath: app.getPath('userData')
-  });
+  databaseManager = new DatabaseManager({ userDataPath: app.getPath('userData') });
   databaseManager.initialize();
+  dataStore = new LocalDataStore({ databasePath: databaseManager.databasePath });
+  cashRegisterStore = new CashRegisterStore({ store: dataStore });
 
   registerIpc();
   createWindow();
@@ -83,6 +159,7 @@ app.on('second-instance', () => {
 });
 
 app.on('before-quit', () => {
+  dataStore?.close();
   databaseManager?.close();
 });
 
