@@ -1,0 +1,23 @@
+node_modules/
+dist/
+dist_electron/
+*.log
+
+# Local databases and customer migrations
+*.db
+*.db-wal
+*.db-shm
+data/
+backups/
+customer-data/
+
+# License signing secrets
+license-private-key.pem
+*.private.pem
+.env
+.env.*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
