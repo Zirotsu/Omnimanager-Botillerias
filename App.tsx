@@ -138,7 +138,6 @@ const App: React.FC = () => {
         {license.status === 'blocked' && <div className="notice danger"><ShieldCheck size={18}/><span>{license.message || 'La licencia local está bloqueada.'}</span></div>}
         <div className="divider"><span>LICENCIA COMERCIAL</span></div>
         <form onSubmit={activate}><label htmlFor="license-key">Clave de licencia</label><div className="license-input"><KeyRound size={18}/><input id="license-key" value={licenseKey} onChange={event => setLicenseKey(event.target.value)} autoComplete="off" spellCheck={false} placeholder="Pega aquí la licencia mensual o anual"/></div><button className="activate-button" type="submit" disabled={busy || !licenseKey.trim()}><ShieldCheck size={18}/>{busy ? 'Validando…' : 'Activar OmniManager'}</button></form>
-        {license.status === 'active' && remaining && <div className="notice"><Clock3 size={18}/><span>{remaining}</span></div>}
         {error && <div className="error-box">{error}</div>}
         <footer>OmniManager Botillerías · Consultoría Helix SpA</footer>
       </section>
