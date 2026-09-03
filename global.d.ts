@@ -51,6 +51,9 @@ declare global {
         openCash(payload: unknown): Promise<{ closure: unknown; snapshot: OmniSnapshot }>;
         closeCash(payload: unknown): Promise<{ closure: unknown; snapshot: OmniSnapshot }>;
       };
+      print: {
+        html(payload: { title: string; html: string }): Promise<{ ok: boolean }>;
+      };
       app: {
         getInfo(): Promise<{ name: string; version: string; packaged: boolean }>;
       };
